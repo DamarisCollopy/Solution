@@ -13,6 +13,7 @@ namespace WebSportGroup.Data
             : base(options)
         {
         }
+
         public DbSet<User> Users { get; set; }
     }
 }

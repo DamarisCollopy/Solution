@@ -1,11 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ClassLibrarySportGroup.Models
 {
-    public class User
+    public class User 
+
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Username is required", AllowEmptyStrings = false)]

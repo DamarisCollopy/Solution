@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrarySportGroup.Models;
 using WebSportGroup.Data;
+using Microsoft.AspNet.Identity;
 
 namespace WebSportGroup.Controllers
 {
@@ -22,7 +20,12 @@ namespace WebSportGroup.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var currentUserEmail = User.Identity.Name;
+            var pesquisa = from m in _context.Users.ToList()
+                           select m;
+            pesquisa = pesquisa.Where(s => s.Email.Contains(currentUserEmail));
+
+            return View(pesquisa);
         }
 
         // GET: Users/Details/5
@@ -32,7 +35,6 @@ namespace WebSportGroup.Controllers
             {
                 return NotFound();
             }
-
             var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
@@ -46,7 +48,14 @@ namespace WebSportGroup.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: Users/Create
